@@ -1,0 +1,107 @@
+* {
+    box-sizing: border-box;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.container {
+    display: grid;
+    justify-content: center;
+    gap: 15px;
+}
+
+table {
+    border: 2px solid blue;
+    border-radius: 5px;
+    font-size: 2rem;
+    text-align: left;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    text-align: right;
+}
+
+th:nth-child(5),
+th:nth-child(6),
+td:nth-child(5),
+td:nth-child(6) {
+    text-align: center;
+}
+
+thead th {
+    background-color: #bac3dc;
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(220, 186, 195, 60%);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: rgba(195, 220, 186, 60%);
+}
+
+th, td {
+    padding: 5px 15px;
+}
+
+.removalBtn {
+    width: 35px;
+    height: 40px;
+    background: none;
+}
+
+.statusChangeBtn {
+    background: none;
+}
+
+button#form-toggle-btn {
+    justify-self: right;
+    font-size: 1.5rem;
+}
+
+button {
+    background-color: aquamarine;
+    font-family: inherit;
+    font-size: inherit;
+    width: 200px;
+    height: 50px;
+    border: none;
+    border-radius: 15px / 50%;
+    cursor: pointer;
+}
+
+button:active {
+    box-shadow: inset 2px 2px #3c8cd6;
+    border: 2px solid #3c8cd6;
+}
+
+form {
+    border: 2px solid black;
+    padding: 15px;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+}
+
+form button {
+    width: 100px;
+    height: 25px;
+    justify-self: right;
+}
+
+.form-field {
+    margin-bottom: 15px;
+}
+
+.form-field label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Pages</th>
+                    <th>Read</th>
+                    <th>Change Status</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="form-toggle-btn" type="button">NEW BOOK</button>
+        <form class="hidden">
+            <h2>Enter New Book</h2>
+            <div class="form-field">
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author">
+            </div>
+            <div class="form-field">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title">
+            </div>
+            <div class="form-field">
+                <label for="pages">Number of pages</label>
+                <input type="number" id="pages" name="pages">
+            </div>
+            <div class="form-field">
+                <label for="read">Read</label>
+                <input type="checkbox" id="read" name="read">
+            </div>
+            <button id="submit-book-btn" type="button">Enter</button>
+        </form>
+    </div>
+</body>
+</html>
