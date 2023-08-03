@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 8rem;
+}
+
+.game-container {
+    position: relative;
+}
+
+.game-starter {
+    font-size: 1.5rem;
+    background-color: white;
+
+    border: 2px solid black;
+    padding: 15px;
+    width: 450px;
+    height: 225px;
+    position: absolute;
+    top: calc(50% - (225px/2));
+    left: calc(50% - (450px/2));
+
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.name-field {
+    display: flex;
+    align-items: center;
+}
+
+.game-starter input {
+    font-family: inherit;
+    font-size: 100%;
+    padding: 0 5px;
+    margin-left: 10px;
+}
+
+.game-starter button {
+    font-family: inherit;
+    font-size: 100%;
+    background-color: lightblue;
+    padding: 5px 20px;
+    border: 2px solid lightblue;
+    border-radius: 25px / 50%;
+    cursor: pointer;
+}
+
+.game-starter button:active {
+    box-shadow: inset 1px 1px #7bb4e9;
+    border: 2px solid #3c8cd6;
+}
+
+.game-board {
+    height: 80vh;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(3, 150px);
+}
+
+.square {
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Remove top border */
+.square:nth-child(-n+3) {
+    border-top: none;
+}
+
+/* Remove bottom border */
+.square:nth-child(n+7) {
+    border-bottom: none;
+}
+
+/* Remove left border */
+.square:nth-child(3n+1) {
+    border-left: none;
+}
+
+/* Remove right border */
+.square:nth-child(3n+3) {
+    border-right: none;
+}

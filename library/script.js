@@ -32,14 +32,14 @@ function removeAllChildren(parentNode) {
 
 // Create button in table cell
 function createCellButton(text, btnClass, attr) {
-    const bookRemovalTd = document.createElement('td');
-    const bookRemovalBtn = document.createElement('button');
-    bookRemovalBtn.textContent = text;
-    bookRemovalBtn.classList.add(btnClass);
-    bookRemovalBtn.setAttribute('type', 'button');
-    bookRemovalBtn.setAttribute(attr.attr, attr.value);
-    bookRemovalTd.appendChild(bookRemovalBtn);
-    return bookRemovalTd;
+    const btnTd = document.createElement('td');
+    const btn = document.createElement('button');
+    btn.textContent = text;
+    btn.classList.add(btnClass);
+    btn.setAttribute('type', 'button');
+    btn.setAttribute(attr.attr, attr.value);
+    btnTd.appendChild(btn);
+    return btnTd;
 }
 
 function addEventListenerList(list, event, func) {
