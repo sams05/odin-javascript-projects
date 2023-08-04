@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="game-container">
-        <div class="game-starter">
+        <div class="game-starter hidden">
             <div class="name-field">
                 <label for="player1">Player 1 Name:</label>
                 <input type="text" id="player1" name="player1">
@@ -33,6 +33,10 @@
             <div class="square" data-idx="6"></div>
             <div class="square" data-idx="7"></div>
             <div class="square" data-idx="8"></div>
+        </div>
+        <div class="game-message"></div>
+        <div id="reset-container">
+            <button type="button" id="reset-btn">Reset</button>
         </div>
     </div>
 </body>

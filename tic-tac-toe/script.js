@@ -42,15 +42,19 @@ const gameBoard = (function() {
     };
 })();
 
-function createPlayer(isPlayer1) {
+function createPlayer(name, isPlayer1) {
     const mark = isPlayer1 ? 'x' : 'o';
     return {
+        name,
         isPlayer1,
         mark,
     };
 }
 
-const gameController = (function(gameBoard, htmlNodes) {
+const gameController = (function(gameBoard, htmlNodes, menuNode, messageNode, resetNode) {
+    const _startBtn = menuNode.querySelector('button');
+    const [_p1Input, _p2Input] = [menuNode.querySelector('#player1'), menuNode.querySelector('#player2')];
+
     let _inPlay = false;
     let _currentPlayer = null;
     let [_player1, _player2] = [null, null];
@@ -62,6 +66,8 @@ const gameController = (function(gameBoard, htmlNodes) {
         for(let [i, mark] of gameBoard.getBoard().entries()) {
             if(mark) {
                 htmlNodes[i].textContent = mark;
+            } else {
+                htmlNodes[i].textContent = '';
             }
         }
     };
@@ -71,6 +77,7 @@ const gameController = (function(gameBoard, htmlNodes) {
      */
     const switchPlayer = function() {
         _currentPlayer = _currentPlayer.isPlayer1 ? _player2 : _player1;
+        _showCurrentPlayer();
     };
 
     /**
@@ -127,19 +134,25 @@ const gameController = (function(gameBoard, htmlNodes) {
         [_player1, _player2] = [null, null];
         gameBoard.clearBoard();
         domHelper.removeEventListenerList(htmlNodes, 'click', _playRound);
-    }
+    };
 
+    const _restartGame = function() {
+        _resetGame();
+        showMenu();
+        resetNode.removeEventListener('click', _restartGame);
+    };
+
+    /**
+     * Declare winner
+     * 
+     * @param {String} status 
+     */
     const _endGame = function(status) {
         if(status === 'won') {
-            let winner;
-            if(_currentPlayer.isPlayer1) {
-                winner = 'Player 1';
-            } else {
-                winner = 'Player 2';
-            }
-            console.log(`${winner} won!`);
+            const winner = _currentPlayer.name;
+            _updateGameMsg(`${winner} won!`);
         } else {
-            console.log('Tie');
+            _updateGameMsg('Tie');
         }
         _resetGame();
     };
@@ -161,18 +174,61 @@ const gameController = (function(gameBoard, htmlNodes) {
         }
     };
 
-    const play = function() {
+    /**
+     * Get name from name entry or use default name
+     * 
+     * @param {htmlNode} input Input node for getting player name
+     * @param {boolean} isPlayer1 
+     * @returns 
+     */
+    const _getNameInput = function(input, isPlayer1) {
+        let name = input.value;
+        if(input.value === '') {
+            name = isPlayer1 ? 'Player 1' : 'Player 2';
+        }
+        return name;
+    };
+
+    const _updateGameMsg = function(message) {
+        messageNode.textContent = message;
+    };
+    
+    const _showCurrentPlayer = function() {
+        _updateGameMsg(`${_currentPlayer.name}'s turn (${_currentPlayer.mark})`);
+    }
+
+    const _play = function() {
+        // Get names and hide starter menu
+        const [p1Name, p2Name] = [_getNameInput(_p1Input, true), _getNameInput(_p2Input, false)];
+        menuNode.classList.add('hidden');
+        _startBtn.removeEventListener('click', _play);
+
+        // Initialize game
         _showBoard();
         _inPlay = true;
-        _player1 = createPlayer(true);
-        _player2 = createPlayer(false);
+        _player1 = createPlayer(p1Name, true);
+        _player2 = createPlayer(p2Name, false);
         _currentPlayer = _player1;
+        _showCurrentPlayer();
         domHelper.addEventListenerList(htmlNodes, 'click', _playRound);
+
+        // Enable reset button
+        resetNode.addEventListener('click', _restartGame);
     };
+
+    const showMenu = function() {
+        menuNode.classList.remove('hidden');
+        _startBtn.addEventListener('click', _play);
+    }
 
     return {
-        play
+        showMenu
     };
-})(gameBoard, document.querySelectorAll('.square'));
+})(gameBoard, 
+    document.querySelectorAll('.square'), 
+    document.querySelector('.game-starter'),
+    document.querySelector('.game-message'),
+    document.querySelector('#reset-btn')
+    );
 
-gameController.play();
+gameController.showMenu();
