@@ -1,9 +1,4 @@
-let myLibrary = [
-    new Book('title1', 'author1', 32, true), 
-    new Book('title2', 'author2', 42, false), 
-    new Book('title3', 'author3', 291, false)
-];
-
+/* Using constructors
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
@@ -18,6 +13,35 @@ Book.prototype.info = function() {
 Book.prototype.changeStatus = function() {
     this.read = !this.read;
 }
+*/
+
+// Using classes
+class Book{
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
+
+    info() {
+        return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? 'read' : 'not read yet'}`;
+    }
+
+    changeStatus() {
+        this.read = !this.read;
+    }
+}
+
+/*
+    Example books must be created after the class declaration because class declarations are not hoisted:
+    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes#class_declaration_hoisting
+*/
+let myLibrary = [
+    new Book('title1', 'author1', 32, true), 
+    new Book('title2', 'author2', 42, false), 
+    new Book('title3', 'author3', 291, false)
+];
 
 function addBookToLibrary(title, author, pages, read) {
     const book = new Book(title, author, pages, read);
