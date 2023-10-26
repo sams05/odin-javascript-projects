@@ -123,6 +123,10 @@ function toggleForm() {
 
 function newBookHandler() {
     const form = document.forms[0];
+    if(!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
     const author = form.elements.author.value;
     const title = form.elements.title.value;
     const pages = +form.elements.pages.value;
