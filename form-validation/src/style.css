@@ -66,3 +66,16 @@ input, select {
     font-family: inherit;
     font-size: inherit;
 }
+
+input {
+    /* Only mark invalid form controls after the user interacted with it */
+    &.visited:invalid {
+        border-color: red;
+        outline-color: red;
+    }
+}
+
+.error-messages {
+    color: red;
+    font-size: 1rem;
+}

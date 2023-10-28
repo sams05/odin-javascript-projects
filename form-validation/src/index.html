@@ -19,6 +19,10 @@
                 - Return error message to add into span (maybe using the validityMessage)
             - Button validator class that have all the other validators and validates when button is clicked
         
+        Country and zip code
+        alpha-2: https://www.htmlstrip.com/iso-country-list-html-select-option
+        https://www.npmjs.com/package/postal-codes-js
+
     -->
 
         <form id="signup-form" action="" method="get" novalidate>
@@ -26,8 +30,8 @@
             <h3>Form!</h3>
             <div class="form-field">
                 <label for="email">Email</label>
-                <input id="email" name="email" type="email" placeholder=" " required />
-                <span id="email-error-output"></span>
+                <input id="email" name="email" type="email" required />
+                <div id="email-validation-output" class="error-messages"></div>
             </div>
             <div class="form-field">
                 <label for="country">Country</label>
@@ -282,12 +286,12 @@
                     <option value="ZM">Zambia</option>
                     <option value="ZW">Zimbabwe</option>
                 </select>
-                <span></span>
+                <div></div>
             </div>
             <div class="form-field">
                 <label for="zip-code">Zip Code</label>
-                <input id="zip-code" name="zip-code" type="text" placeholder=" " required />
-                <span></span>
+                <input id="zip-code" name="zip-code" type="text" required />
+                <div></div>
             </div>
             <div class="form-field">
                 <label for="pass">Password</label>
@@ -297,10 +301,9 @@
                     name="pass"
                     type="password"
                     pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-                    placeholder=" "
                     required
                 />
-                <span></span>
+                <div></div>
             </div>
             <div class="form-field">
                 <label for="pass-confirm">Confirm Password</label>
@@ -310,10 +313,9 @@
                     name="pass-confirm"
                     type="password"
                     pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-                    placeholder=" "
                     required
                 />
-                <span></span>
+                <div></div>
             </div>
             <div>
                 <button type="submit">Create Account</button>
