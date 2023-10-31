@@ -7,6 +7,10 @@
     </head>
     <body>
         <!--
+        TODO:
+        Change webpack setting to production
+        Clean up requirements. Write reflections and project description in README.
+
         x1. Email, Country, Zip Code, Password and Password Confirmation fields
         2. It should use live inline validation to inform the user whether a field is properly filled in or not
             - Styling invalid fields
@@ -18,6 +22,11 @@
                 - setCustomValidity to style when invalid
                 - Return error message to add into span (maybe using the validityMessage)
             - Button validator class that have all the other validators and validates when button is clicked
+                // |Todo reportValidation on submit: 
+                // Button validator class that have all the other validators and validates when button is clicked
+                // give each validator its own reportValidation method
+                // Then in index.js, call reportValidation for each validator on submit
+                // Have report validation flag visited inputs 
         
         Country and zip code
         alpha-2: https://www.htmlstrip.com/iso-country-list-html-select-option
@@ -315,8 +324,9 @@
                 />
                 <div id="password-confirm-validation-output" class="error-messages"></div>
             </div>
-            <div>
-                <button type="submit">Create Account</button>
+            <div class="form-field">
+                <button id="submit" type="submit">Create Account</button>
+                <div id="submit-btn-validation-output" class="error-messages"></div>
             </div>
         </form>
     </body>

@@ -1,3 +1,4 @@
+import { markVisited } from './form-helper';
 import postalCodes from 'postal-codes-js';
 
 /**
@@ -35,11 +36,15 @@ class Validator {
      * Provide error messages on errorOutput based on the result of the validate method.
      * Take a validate callback to allow caller to overwrite the validate method
      * @param {Function} validate 
+     * @returns {Boolean} Whether the input passes validation
      */
-    #reportValidation(validate = this.validate) {
+    reportValidation(validate = this.validate) {
         // Clear previous errors
         this.#errorOutput.replaceChildren();
         this.#input.setCustomValidity('');
+
+        // To style invalid inputs only after the user interacted with the form control
+        markVisited(this.#input);
 
         const validation = validate();
         if (!validation.valid) {
@@ -51,28 +56,23 @@ class Validator {
             }
             this.#errorOutput.append(ul);
         }
+        return validation.valid;
     }
 
+    /**
+     * Attach event listeners to report validation on input and on blur
+     * @param {Function} validate 
+     */
     init(validate) {
         this.#input.addEventListener('input', (e) => {
-            this.#reportValidation(validate);
+            this.reportValidation(validate);
         });
         this.#input.addEventListener('blur', (e) => {
-            this.#reportValidation(validate);
+            this.reportValidation(validate);
         });
-        // |Todo reportValidation on submit: 
-        // Button validator class that have all the other validators and validates when button is clicked
-        // give each validator its own reportValidation method
-        // Then in index.js, call reportValidation for each validator on submit
     }
 }
 
-/* |Todo
-Validator classes, construct with id, init function to attach event listeners
-- Validate on input and blur
-    - setCustomValidity to style when invalid
-    - Return error message to add into span (maybe using the validityMessage)
-    */
 class EmailValidator {
     #validator;
 
@@ -88,7 +88,7 @@ class EmailValidator {
         this.#validator = new Validator(input, errorOutput);
     }
 
-    #validate() {
+    validate() {
         const generalValidation = this.#validator.validate();
         let { valid } = generalValidation;
         const { errorMessages } = generalValidation;
@@ -99,8 +99,19 @@ class EmailValidator {
         return { valid, errorMessages };
     }
 
+    /**
+     * Provide error messages on errorOutput based on the result of the validate method.
+     * @returns {Boolean} Whether the input passes validation
+     */
+    reportValidation() {
+        return this.#validator.reportValidation(this.validate.bind(this));
+    }
+
+    /**
+     * Attach event listeners to report validation on input and on blur
+     */
     init() {
-        this.#validator.init(this.#validate.bind(this));
+        this.#validator.init(this.validate.bind(this));
     }
 }
 
@@ -121,7 +132,7 @@ class ZipCodeValidator {
         this.#select = select;
     }
 
-    #validate() {
+    validate() {
         const generalValidation = this.#validator.validate();
         let { valid } = generalValidation;
         const { errorMessages } = generalValidation;
@@ -137,8 +148,19 @@ class ZipCodeValidator {
         return { valid, errorMessages };
     }
 
+    /**
+     * Provide error messages on errorOutput based on the result of the validate method.
+     * @returns {Boolean} Whether the input passes validation
+     */
+    reportValidation() {
+        return this.#validator.reportValidation(this.validate.bind(this));
+    }
+
+    /**
+     * Attach event listeners to report validation on input and on blur
+     */
     init() {
-        this.#validator.init(this.#validate.bind(this));
+        this.#validator.init(this.validate.bind(this));
     }
 }
 
@@ -163,7 +185,7 @@ class PasswordValidator {
         this.#validator = new Validator(input, errorOutput);
     }
 
-    #validate() {
+    validate() {
         const generalValidation = this.#validator.validate();
         let { valid } = generalValidation;
         const { errorMessages } = generalValidation;
@@ -180,8 +202,19 @@ class PasswordValidator {
         return { valid, errorMessages };
     }
 
+    /**
+     * Provide error messages on errorOutput based on the result of the validate method.
+     * @returns {Boolean} Whether the input passes validation
+     */
+    reportValidation() {
+        return this.#validator.reportValidation(this.validate.bind(this));
+    }
+
+    /**
+     * Attach event listeners to report validation on input and on blur
+     */
     init() {
-        this.#validator.init(this.#validate.bind(this));
+        this.#validator.init(this.validate.bind(this));
     }
 }
 
@@ -203,7 +236,7 @@ class PasswordConfirmValidator {
         this.#passInput = passInput;
     }
 
-    #validate() {
+    validate() {
         const generalValidation = this.#validator.validate();
         let { valid } = generalValidation;
         const { errorMessages } = generalValidation;
@@ -218,9 +251,79 @@ class PasswordConfirmValidator {
         return { valid, errorMessages };
     }
 
+    /**
+     * Provide error messages on errorOutput based on the result of the validate method.
+     * @returns {Boolean} Whether the input passes validation
+     */
+    reportValidation() {
+        return this.#validator.reportValidation(this.validate.bind(this));
+    }
+
     init() {
-        this.#validator.init(this.#validate.bind(this));
+        this.#validator.init(this.validate.bind(this));
     }
 }
 
-export { EmailValidator, ZipCodeValidator, PasswordValidator, PasswordConfirmValidator };
+class FormValidator {
+    #button;
+    #errorOutput;
+    #validators;
+
+    /**
+     * 
+     * @param {HTMLButtonElement} button 
+     * @param  {...Validator} validators Objects that implements the validate and reportValidity methods
+     */
+    constructor(button, errorOutput, ...validators) {
+        this.#button = button;
+        this.#errorOutput = errorOutput;
+        this.#validators = validators;
+    }
+
+    validate() {
+        let valid = true;
+        const errorMessages = [];
+        for (const validator of this.#validators) {
+            const inputValid = validator.reportValidation();
+            if (!inputValid) {
+                valid = false;
+            }
+        }
+        if(valid === false) {
+            errorMessages.push('Correct the form, then try again.');
+        }
+        return { valid, errorMessages };
+    }
+
+    /**
+     * Provide error messages on errorOutput based on the result of the validate method.
+     * @returns {Boolean} Whether the input passes validation
+     */
+    reportValidation() {
+        // Clear previous errors
+        this.#errorOutput.replaceChildren();
+
+        const validation = this.validate();
+        if (!validation.valid) {
+            const ul = document.createElement('ul');
+            for (const errorMessage of validation.errorMessages) {
+                const li = document.createElement('li');
+                li.textContent = errorMessage;
+                ul.append(li);
+            }
+            this.#errorOutput.append(ul);
+        }
+        return validation.valid;
+    }
+
+    init() {
+        this.#button.addEventListener('click', e => {
+            const valid = this.reportValidation();
+            if(!valid) {
+                e.preventDefault();
+            }
+        })
+    }
+}
+
+export { EmailValidator, ZipCodeValidator, PasswordValidator, PasswordConfirmValidator, FormValidator };
