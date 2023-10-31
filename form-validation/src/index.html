@@ -299,10 +299,10 @@
                     class="error"
                     name="pass"
                     type="password"
-                    pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
                     required
                 />
-                <div></div>
+                <div id="password-validation-output" class="error-messages"></div>
             </div>
             <div class="form-field">
                 <label for="pass-confirm">Confirm Password</label>
@@ -311,10 +311,10 @@
                     class="error"
                     name="pass-confirm"
                     type="password"
-                    pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
                     required
                 />
-                <div></div>
+                <div id="password-confirm-validation-output" class="error-messages"></div>
             </div>
             <div>
                 <button type="submit">Create Account</button>

@@ -60,7 +60,10 @@ class Validator {
         this.#input.addEventListener('blur', (e) => {
             this.#reportValidation(validate);
         });
-        // |Todo reportValidation on submit
+        // |Todo reportValidation on submit: 
+        // Button validator class that have all the other validators and validates when button is clicked
+        // give each validator its own reportValidation method
+        // Then in index.js, call reportValidation for each validator on submit
     }
 }
 
@@ -71,7 +74,7 @@ Validator classes, construct with id, init function to attach event listeners
     - Return error message to add into span (maybe using the validityMessage)
     */
 class EmailValidator {
-    #validator
+    #validator;
 
     /**
      * 
@@ -124,7 +127,7 @@ class ZipCodeValidator {
         const { errorMessages } = generalValidation;
         const countryCode = this.#select.value;
         const zipCode = this.#validator.input.value;
-        if(typeof postalCodes.validate(countryCode, zipCode) === 'string') {
+        if (typeof postalCodes.validate(countryCode, zipCode) === 'string') {
             valid = false;
             const errorMessage = postalCodes.validate(countryCode, zipCode);
             // Tells browser that there is an error so that the css styling works appropriately
@@ -140,7 +143,51 @@ class ZipCodeValidator {
 }
 
 class PasswordValidator {
+    #validator;
+    static #REQUIREMENTS = {
+        HAS_MIN_LENGTH: { pattern: /.{8,}/, errorMessage: 'Password must have at least 8 characters.' },
+        HAS_DIGIT: { pattern: /^(?=.*\d).*/, errorMessage: 'Password must contain at least one digit.' },
+        HAS_LOWER_CASE_LETTER: { pattern: /^(?=.*[a-z]).*/, errorMessage: 'Password must contain at least one lower case letter.' },
+        HAS_UPPER_CASE_LETTER: { pattern: /^(?=.*[A-Z]).*/, errorMessage: 'Password must contain at least one upper case letter.' }
+    };
+
+    /**
+     * 
+     * @param {HTMLInputElement} input 
+     * @param {HTMLInputElement} confirmInput 
+     * @param {HTMLElement} errorOutput 
+     */
+    constructor(input, errorOutput) {
+        if (!(input instanceof HTMLInputElement) || (input.type !== 'password')) {
+            throw new TypeError('Invalid input element, must be of type password');
+        }
+        this.#validator = new Validator(input, errorOutput);
+    }
+
+    #validate() {
+        const generalValidation = this.#validator.validate();
+        let { valid } = generalValidation;
+        const { errorMessages } = generalValidation;
+        const password = this.#validator.input.value;
+        // In HTML: pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
+        if (this.#validator.input.validity.patternMismatch) {
+            valid = false;
+            for (const {pattern, errorMessage} of Object.values(PasswordValidator.#REQUIREMENTS)) {
+                if (!pattern.test(password)) {
+                    errorMessages.push(errorMessage);
+                }
+            } 
+        }
+        return { valid, errorMessages };
+    }
+
+    init() {
+        this.#validator.init(this.#validate.bind(this));
+    }
+}
+
+class PasswordConfirmValidator {
 
 }
 
-export { EmailValidator, ZipCodeValidator };
+export { EmailValidator, ZipCodeValidator, PasswordValidator };
