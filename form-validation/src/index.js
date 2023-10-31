@@ -1,6 +1,6 @@
 import './style.css';
 import { listenFormControlInteraction } from './form-helper';
-import { EmailValidator, ZipCodeValidator, PasswordValidator } from './validators';
+import { EmailValidator, ZipCodeValidator, PasswordValidator, PasswordConfirmValidator } from './validators';
 
 listenFormControlInteraction();
 
@@ -16,3 +16,6 @@ new ZipCodeValidator(countrySelect, zipCodeInput, zipCodeErrorOutput).init();
 const passInput = document.getElementById('pass');
 const passErrorOutput = document.getElementById('password-validation-output');
 new PasswordValidator(passInput, passErrorOutput).init();
+const passConfirmInput = document.getElementById('pass-confirm');
+const passConfirmErrorOutput = document.getElementById('password-confirm-validation-output');
+new PasswordConfirmValidator(passConfirmInput, passInput, passConfirmErrorOutput).init();

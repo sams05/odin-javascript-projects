@@ -154,7 +154,6 @@ class PasswordValidator {
     /**
      * 
      * @param {HTMLInputElement} input 
-     * @param {HTMLInputElement} confirmInput 
      * @param {HTMLElement} errorOutput 
      */
     constructor(input, errorOutput) {
@@ -172,11 +171,11 @@ class PasswordValidator {
         // In HTML: pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
         if (this.#validator.input.validity.patternMismatch) {
             valid = false;
-            for (const {pattern, errorMessage} of Object.values(PasswordValidator.#REQUIREMENTS)) {
+            for (const { pattern, errorMessage } of Object.values(PasswordValidator.#REQUIREMENTS)) {
                 if (!pattern.test(password)) {
                     errorMessages.push(errorMessage);
                 }
-            } 
+            }
         }
         return { valid, errorMessages };
     }
@@ -187,7 +186,41 @@ class PasswordValidator {
 }
 
 class PasswordConfirmValidator {
+    #validator;
+    #passInput;
 
+    /**
+     * 
+     * @param {HTMLInputElement} input 
+     * @param {HTMLInputElement} passInput 
+     * @param {HTMLElement} errorOutput 
+     */
+    constructor(input, passInput, errorOutput) {
+        if (!(input instanceof HTMLInputElement) || (input.type !== 'password')) {
+            throw new TypeError('Invalid input element, must be of type password');
+        }
+        this.#validator = new Validator(input, errorOutput);
+        this.#passInput = passInput;
+    }
+
+    #validate() {
+        const generalValidation = this.#validator.validate();
+        let { valid } = generalValidation;
+        const { errorMessages } = generalValidation;
+        const passwordConfirm = this.#validator.input.value;
+        const password = this.#passInput.value;
+        if (passwordConfirm !== password) {
+            valid = false;
+            // Tells browser that there is an error so that the css styling works appropriately
+            this.#validator.input.setCustomValidity('Passwords must match.');
+            errorMessages.push('Passwords must match.');
+        }
+        return { valid, errorMessages };
+    }
+
+    init() {
+        this.#validator.init(this.#validate.bind(this));
+    }
 }
 
-export { EmailValidator, ZipCodeValidator, PasswordValidator };
+export { EmailValidator, ZipCodeValidator, PasswordValidator, PasswordConfirmValidator };
