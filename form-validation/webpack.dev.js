@@ -25,12 +25,4 @@ module.exports = {
             },
         ]
     },
-    /*
-    optimization: {
-      minimizer: [
-        new CssMinimizer(),
-        '...', // extend existing minimizers (i.e. `terser-webpack-plugin`)
-      ],
-    },
-    */
 };

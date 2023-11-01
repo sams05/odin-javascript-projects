@@ -6,34 +6,6 @@
         <title>Document</title>
     </head>
     <body>
-        <!--
-        TODO:
-        Change webpack setting to production
-        Clean up requirements. Write reflections and project description in README.
-
-        x1. Email, Country, Zip Code, Password and Password Confirmation fields
-        2. It should use live inline validation to inform the user whether a field is properly filled in or not
-            - Styling invalid fields
-            - Error messages until fixed
-        3. Error message if the button is pushed with any active errors or unfilled required fields
-
-        Validator classes, construct with id, init function to attach event listeners
-            - Validate on input and blur
-                - setCustomValidity to style when invalid
-                - Return error message to add into span (maybe using the validityMessage)
-            - Button validator class that have all the other validators and validates when button is clicked
-                // |Todo reportValidation on submit: 
-                // Button validator class that have all the other validators and validates when button is clicked
-                // give each validator its own reportValidation method
-                // Then in index.js, call reportValidation for each validator on submit
-                // Have report validation flag visited inputs 
-        
-        Country and zip code
-        alpha-2: https://www.htmlstrip.com/iso-country-list-html-select-option
-        https://www.npmjs.com/package/postal-codes-js
-
-    -->
-
         <form id="signup-form" action="" method="get" novalidate>
             <!-- Using get method to check submission value. Should use post method in real signup form -->
             <h3>Form!</h3>
