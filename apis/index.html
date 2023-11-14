@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            img {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="#" alt="cat" />
+        <span></span>
+        <form action="#">
+            <input type="text" />
+            <button type="button">New Image</button>
+        </form>
+        <script>
+            const img = document.querySelector('img');
+            renderImage('cats');
+
+            const input = document.querySelector('input');
+            const btn = document.querySelector('button');
+            const span = document.querySelector('span');
+            btn.addEventListener('click', (e) => renderImage(`${input.value}`));
+
+            // default option for mode is 'cors'
+            function renderImage(searchTerm) {
+                return fetch(`https://api.giphy.com/v1/gifs/translate?api_key=super_legit_api_key&s=${searchTerm}`)
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((json) => {
+                        if (json.meta.status != 200) {
+                            // Invalid API keys
+                            throw new Error(`${json.meta.status}: ${json.meta.msg}`);
+                        }
+                        if (json.data.length === 0) {
+                            // No gifs found
+                            throw new Error('Image not found');
+                        }
+                        img.src = json.data.images.original.url;
+                        img.alt = searchTerm;
+                        span.textContent = '';
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        img.src = '#';
+                        img.alt = '';
+                        span.textContent = 'There is an issue with getting your gif.';
+                    });
+            }
+        </script>
+    </body>
+</html>
