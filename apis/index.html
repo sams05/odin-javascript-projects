@@ -27,30 +27,29 @@
             btn.addEventListener('click', (e) => renderImage(`${input.value}`));
 
             // default option for mode is 'cors'
-            function renderImage(searchTerm) {
-                return fetch(`https://api.giphy.com/v1/gifs/translate?api_key=super_legit_api_key&s=${searchTerm}`)
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then((json) => {
-                        if (json.meta.status != 200) {
-                            // Invalid API keys
-                            throw new Error(`${json.meta.status}: ${json.meta.msg}`);
-                        }
-                        if (json.data.length === 0) {
-                            // No gifs found
-                            throw new Error('Image not found');
-                        }
-                        img.src = json.data.images.original.url;
-                        img.alt = searchTerm;
-                        span.textContent = '';
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        img.src = '#';
-                        img.alt = '';
-                        span.textContent = 'There is an issue with getting your gif.';
-                    });
+            async function renderImage(searchTerm) {
+                try {
+                    const response = await fetch(
+                        `https://api.giphy.com/v1/gifs/translate?api_key=JHhOk3RZZHjNjLwelC6v96QjDE6cKvfb&s=${searchTerm}`
+                    );
+                    const json = await response.json();
+                    if (json.meta.status != 200) {
+                        // Invalid API keys
+                        throw new Error(`${json.meta.status}: ${json.meta.msg}`);
+                    }
+                    if (json.data.length === 0) {
+                        // No gifs found
+                        throw new Error('Image not found');
+                    }
+                    img.src = json.data.images.original.url;
+                    img.alt = searchTerm;
+                    span.textContent = '';
+                } catch (err) {
+                    console.error(err);
+                    img.src = '#';
+                    img.alt = '';
+                    span.textContent = 'There is an issue with getting your gif.';
+                }
             }
         </script>
     </body>
