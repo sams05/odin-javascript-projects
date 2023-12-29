@@ -76,6 +76,38 @@ class LinkedList {
     }
 
     /**
+     * Inserts a new node with the provided value at the given index
+     * @param {*} value the value to insert
+     * @param {*} index the index to insert at
+     * @returns the updated list
+     */
+    insertAt(value, index = 0) {
+        // Prepend if index is less than or equal to 0, append if index is greater than largest index
+        if(index <= 0) {
+            this.prepend(value);
+            return this;
+        }
+        if(index >= this.size) {
+            this.append(value);
+            return this;
+        }
+
+        // Case: index is at least 1 and at most size-1
+        let curNode = this.head;
+        let curIndex = 0;
+        // Traverse until curNode is before the specified index then insert
+        // new node after curNode
+        while(curNode.nextNode !== null) {
+            if(curIndex + 1 === index) {
+                curNode.nextNode = new LinkedList.$Node(value, curNode.nextNode);
+                return this;
+            }
+            curNode = curNode.nextNode;
+            curIndex++;
+        }
+    }
+
+    /**
      * Removes the last element from the list
      * @returns Value of the removed element
      */
@@ -101,6 +133,41 @@ class LinkedList {
                 return val;
             }
             cur = cur.nextNode;
+        }
+    }
+
+    /**
+     * Removes the node at the given index
+     * @param {Number} index 
+     * @returns The value of the removed node
+     */
+    removeAt(index = 0) {
+        let removedVal;
+        // Remove first node
+        if(index === 0) {
+            removedVal = this.head.value;
+            this.head = this.head.nextNode;
+            return removedVal;
+        }
+        // Remove last node separately to ensure that this.tail is updated
+        if(index === this.size - 1) {
+            removedVal = this.tail.value;
+            this.pop();
+            return removedVal;
+        }
+
+        let curNode = this.head;
+        let curIndex = 0;
+        // Traverse until curNode is before the specified index then adjust
+        // curNode.nextNode to skip over the node at the specified index
+        while(curNode.nextNode !== null) {
+            if(curIndex + 1 === index) {
+                removedVal = curNode.nextNode.value;
+                curNode.nextNode = curNode.nextNode.nextNode;
+                return removedVal;
+            }
+            curNode = curNode.nextNode;
+            curIndex++;
         }
     }
 
