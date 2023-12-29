@@ -10,6 +10,16 @@ class LinkedList {
         }
     }
 
+    prepend(value) {
+        // Works whether head is null or not
+        this.head = new LinkedList.$Node(value, this.head);
+        // If the LinkedList is originally empty, update the tail to point to the new node
+        if(this.tail === null) {
+            this.tail = this.head;
+        }
+        return this;
+    }
+
     append(value) {
         const newNode = new LinkedList.$Node(value, null);
         // Case: empty list
@@ -22,6 +32,16 @@ class LinkedList {
         this.tail.nextNode = newNode;
         this.tail = newNode;
         return this;
+    }
+
+    get size() {
+        let count = 0;
+        let cur = this.head;
+        while(cur !== null) {
+            count++;
+            cur = cur.nextNode;
+        }
+        return count;
     }
 
     toString() {
@@ -42,10 +62,9 @@ class LinkedList {
 }
 
 const linkedList = new LinkedList();
-linkedList.append(1);
-linkedList.append(1);
-linkedList.append(2);
-linkedList.append(1);
-linkedList.append(31);
-linkedList.append(192);
+linkedList.append(1).append(2).append(1).append(31).append(192);
 console.log(linkedList.toString());
+
+const linkedList2 = new LinkedList();
+linkedList2.prepend(1).prepend(2).prepend(1).prepend(31).prepend(192);
+console.log(linkedList2.toString());
