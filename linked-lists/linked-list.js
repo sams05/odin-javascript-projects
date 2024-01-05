@@ -3,7 +3,7 @@ class LinkedList {
     head = null;
     tail = null;
 
-    static $Node = class Node {
+    static #Node = class Node {
         constructor(value = null, nextNode = null) {
             this.value = value;
             this.nextNode = nextNode;
@@ -48,7 +48,7 @@ class LinkedList {
      */
     prepend(value) {
         // Works whether head is null or not
-        this.head = new LinkedList.$Node(value, this.head);
+        this.head = new LinkedList.#Node(value, this.head);
         // If the LinkedList is originally empty, update the tail to point to the new node
         if(this.tail === null) {
             this.tail = this.head;
@@ -62,7 +62,7 @@ class LinkedList {
      * @returns the updated list
      */
     append(value) {
-        const newNode = new LinkedList.$Node(value, null);
+        const newNode = new LinkedList.#Node(value, null);
         // Case: empty list
         if(this.head === null) {
             this.head = newNode;
@@ -99,7 +99,7 @@ class LinkedList {
         // new node after curNode
         while(curNode.nextNode !== null) {
             if(curIndex + 1 === index) {
-                curNode.nextNode = new LinkedList.$Node(value, curNode.nextNode);
+                curNode.nextNode = new LinkedList.#Node(value, curNode.nextNode);
                 return this;
             }
             curNode = curNode.nextNode;
