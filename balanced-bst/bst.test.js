@@ -1,5 +1,36 @@
 import { Tree } from "./bst";
 
+// For visualization, use https://yongdanielliang.github.io/animation/web/BST.html
+// Create BST from [10, 3, 5, 2, 12, 11] by inserting in this order: 5, 2, 3, 11, 10, 12
+describe('Depth-first traversals', () => {
+    const tree = new Tree([10, 3, 5, 2, 12, 11]);
+    test('preorder', () => {
+        function toString() {
+            const dataArr = [];
+            function concatData(data) {
+                dataArr.push(data);
+            }
+            Tree.preOrder(this, concatData);
+            return dataArr.join(', ');
+        }
+        expect(toString.call(tree)).toEqual('5, 2, 3, 11, 10, 12');
+    });
+    test('inorder', () => {
+        expect(tree.toString()).toEqual('2, 3, 5, 10, 11, 12');
+    });
+    test('postorder', () => {
+        function toString() {
+            const dataArr = [];
+            function concatData(data) {
+                dataArr.push(data);
+            }
+            Tree.postOrder(this, concatData);
+            return dataArr.join(', ');
+        }
+        expect(toString.call(tree)).toEqual('3, 2, 10, 12, 11, 5');
+    });
+});
+
 describe('Tree construction', () => {
     test('from typical array', () => {
         const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);

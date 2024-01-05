@@ -39,6 +39,30 @@ class Tree {
         Tree.#inOrderRecur(root.right, cb);
     }
 
+    static preOrder(tree, cb) {
+        Tree.#preOrderRecur(tree.#root, cb);
+    }
+
+    static #preOrderRecur(root, cb = ((data) => console.log(data))) {
+        if(root === null) return;
+
+        cb(root.data);
+        Tree.#preOrderRecur(root.left, cb);
+        Tree.#preOrderRecur(root.right, cb);
+    }
+
+    static postOrder(tree, cb) {
+        Tree.#postOrderRecur(tree.#root, cb);
+    }
+
+    static #postOrderRecur(root, cb = ((data) => console.log(data))) {
+        if(root === null) return;
+
+        Tree.#postOrderRecur(root.left, cb);
+        Tree.#postOrderRecur(root.right, cb);
+        cb(root.data);
+    }
+
     toString() {
         const dataArr = [];
         function concatData(data) {
