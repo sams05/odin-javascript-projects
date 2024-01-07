@@ -4,30 +4,77 @@ import { Tree } from "./bst";
 // Create BST from [10, 3, 5, 2, 12, 11] by inserting in this order: 5, 2, 3, 11, 10, 12
 describe('Depth-first traversals', () => {
     const tree = new Tree([10, 3, 5, 2, 12, 11]);
-    test('preorder', () => {
-        function toString() {
-            const dataArr = [];
-            function concatData(data) {
-                dataArr.push(data);
+
+    describe('Static methods', () => {
+        test('preorder', () => {
+            function toString() {
+                const dataArr = [];
+                function concatData(data) {
+                    dataArr.push(data);
+                }
+                Tree.preOrder(this, concatData);
+                return dataArr.join(', ');
             }
-            Tree.preOrder(this, concatData);
-            return dataArr.join(', ');
-        }
-        expect(toString.call(tree)).toEqual('5, 2, 3, 11, 10, 12');
-    });
-    test('inorder', () => {
-        expect(tree.toString()).toEqual('2, 3, 5, 10, 11, 12');
-    });
-    test('postorder', () => {
-        function toString() {
-            const dataArr = [];
-            function concatData(data) {
-                dataArr.push(data);
+            expect(toString.call(tree)).toEqual('5, 2, 3, 11, 10, 12');
+        });
+        test('inorder', () => {
+            function toString() {
+                const dataArr = [];
+                function concatData(data) {
+                    dataArr.push(data);
+                }
+                Tree.inOrder(this, concatData);
+                return dataArr.join(', ');
             }
-            Tree.postOrder(this, concatData);
-            return dataArr.join(', ');
-        }
-        expect(toString.call(tree)).toEqual('3, 2, 10, 12, 11, 5');
+            expect(toString.call(tree)).toEqual('2, 3, 5, 10, 11, 12');
+        });
+        test('postorder', () => {
+            function toString() {
+                const dataArr = [];
+                function concatData(data) {
+                    dataArr.push(data);
+                }
+                Tree.postOrder(this, concatData);
+                return dataArr.join(', ');
+            }
+            expect(toString.call(tree)).toEqual('3, 2, 10, 12, 11, 5');
+        });
+    });
+
+    describe('Instance methods', () => {
+        test('preorder', () => {
+            function toString() {
+                const dataArr = [];
+                function concatData(data) {
+                    dataArr.push(data);
+                }
+                this.preOrder(concatData);
+                return dataArr.join(', ');
+            }
+            expect(toString.call(tree)).toEqual('5, 2, 3, 11, 10, 12');
+        });
+        test('inorder', () => {
+            function toString() {
+                const dataArr = [];
+                function concatData(data) {
+                    dataArr.push(data);
+                }
+                this.inOrder(concatData);
+                return dataArr.join(', ');
+            }
+            expect(toString.call(tree)).toEqual('2, 3, 5, 10, 11, 12');
+        });
+        test('postorder', () => {
+            function toString() {
+                const dataArr = [];
+                function concatData(data) {
+                    dataArr.push(data);
+                }
+                this.postOrder(concatData);
+                return dataArr.join(', ');
+            }
+            expect(toString.call(tree)).toEqual('3, 2, 10, 12, 11, 5');
+        });
     });
 });
 

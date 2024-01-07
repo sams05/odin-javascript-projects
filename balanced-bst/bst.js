@@ -31,6 +31,10 @@ class Tree {
         Tree.#inOrderRecur(tree.#root, cb);
     }
 
+    inOrder(cb) {
+        Tree.inOrder(this, cb);
+    }
+
     static #inOrderRecur(root, cb = ((data) => console.log(data))) {
         if(root === null) return;
 
@@ -41,6 +45,10 @@ class Tree {
 
     static preOrder(tree, cb) {
         Tree.#preOrderRecur(tree.#root, cb);
+    }
+
+    preOrder(cb) {
+        Tree.preOrder(this, cb);
     }
 
     static #preOrderRecur(root, cb = ((data) => console.log(data))) {
@@ -61,6 +69,10 @@ class Tree {
         Tree.#postOrderRecur(root.left, cb);
         Tree.#postOrderRecur(root.right, cb);
         cb(root.data);
+    }
+
+    postOrder(cb) {
+        Tree.postOrder(this, cb);
     }
 
     toString() {
