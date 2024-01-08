@@ -27,52 +27,79 @@ class Tree {
         return root;
     }
 
-    static inOrder(tree, cb) {
-        Tree.#inOrderRecur(tree.#root, cb);
+    static inOrder(tree, cb, acc) {
+        return Tree.#inOrderRecur(tree.#root, cb, acc);
     }
 
-    inOrder(cb) {
-        Tree.inOrder(this, cb);
+    inOrder(cb, acc) {
+        return Tree.inOrder(this, cb, acc);
     }
 
-    static #inOrderRecur(root, cb = ((data) => console.log(data))) {
-        if (root === null) return;
+    static #inOrderRecur(root, cb, acc) {
+        if(typeof cb !== 'function') {
+            acc = [];
+            cb = function(data, acc) {
+                acc.push(data);
+                return acc;
+            }
+        }
 
-        Tree.#inOrderRecur(root.left, cb);
-        cb(root.data);
-        Tree.#inOrderRecur(root.right, cb);
+        if (root === null) return acc;
+
+        acc = Tree.#inOrderRecur(root.left, cb, acc);
+        acc = cb(root.data, acc);
+        acc = Tree.#inOrderRecur(root.right, cb, acc);
+        return acc;
     }
 
-    static preOrder(tree, cb) {
-        Tree.#preOrderRecur(tree.#root, cb);
+    static preOrder(tree, cb, acc) {
+        return Tree.#preOrderRecur(tree.#root, cb, acc);
     }
 
-    preOrder(cb) {
-        Tree.preOrder(this, cb);
+    preOrder(cb, acc) {
+        return Tree.preOrder(this, cb, acc);
     }
 
-    static #preOrderRecur(root, cb = ((data) => console.log(data))) {
-        if (root === null) return;
+    static #preOrderRecur(root, cb, acc) {
+        if(typeof cb !== 'function') {
+            acc = [];
+            cb = function(data, acc) {
+                acc.push(data);
+                return acc;
+            }
+        }
 
-        cb(root.data);
-        Tree.#preOrderRecur(root.left, cb);
-        Tree.#preOrderRecur(root.right, cb);
+        if (root === null) return acc;
+
+        acc = cb(root.data, acc);
+        acc = Tree.#preOrderRecur(root.left, cb, acc);
+        acc = Tree.#preOrderRecur(root.right, cb, acc);
+        return acc;
     }
 
-    static postOrder(tree, cb) {
-        Tree.#postOrderRecur(tree.#root, cb);
+    static postOrder(tree, cb, acc) {
+        return Tree.#postOrderRecur(tree.#root, cb, acc);
     }
 
-    static #postOrderRecur(root, cb = ((data) => console.log(data))) {
-        if (root === null) return;
-
-        Tree.#postOrderRecur(root.left, cb);
-        Tree.#postOrderRecur(root.right, cb);
-        cb(root.data);
+    postOrder(cb, acc) {
+        return Tree.postOrder(this, cb, acc);
     }
 
-    postOrder(cb) {
-        Tree.postOrder(this, cb);
+    static #postOrderRecur(root, cb, acc) {
+        if(typeof cb !== 'function') {
+            acc = [];
+            cb = function(data, acc) {
+                acc.push(data);
+                return acc;
+            }
+        }
+
+        if (root === null) return acc;
+
+        acc = Tree.#postOrderRecur(root.left, cb, acc);
+        acc = Tree.#postOrderRecur(root.right, cb, acc);
+        acc = cb(root.data, acc);
+        return acc;
     }
 
     static levelOrder(tree, cb, acc) {

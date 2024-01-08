@@ -18,73 +18,34 @@ describe('Depth-first traversals', () => {
 
     describe('Static methods', () => {
         test('preorder', () => {
-            function toString() {
-                const dataArr = [];
-                function concatData(data) {
-                    dataArr.push(data);
-                }
-                Tree.preOrder(this, concatData);
-                return dataArr.join(', ');
-            }
-            expect(toString.call(tree)).toEqual('5, 2, 3, 11, 10, 12');
+            expect(Tree.preOrder(tree)).toEqual([5, 2, 3, 11, 10, 12]);
         });
         test('inorder', () => {
-            function toString() {
-                const dataArr = [];
-                function concatData(data) {
-                    dataArr.push(data);
-                }
-                Tree.inOrder(this, concatData);
-                return dataArr.join(', ');
-            }
-            expect(toString.call(tree)).toEqual('2, 3, 5, 10, 11, 12');
+            expect(Tree.inOrder(tree)).toEqual([2, 3, 5, 10, 11, 12]);
         });
         test('postorder', () => {
-            function toString() {
-                const dataArr = [];
-                function concatData(data) {
-                    dataArr.push(data);
-                }
-                Tree.postOrder(this, concatData);
-                return dataArr.join(', ');
-            }
-            expect(toString.call(tree)).toEqual('3, 2, 10, 12, 11, 5');
+            expect(Tree.postOrder(tree)).toEqual([3, 2, 10, 12, 11, 5]);
         });
     });
 
     describe('Instance methods', () => {
         test('preorder', () => {
-            function toString() {
-                const dataArr = [];
-                function concatData(data) {
-                    dataArr.push(data);
-                }
-                this.preOrder(concatData);
-                return dataArr.join(', ');
-            }
-            expect(toString.call(tree)).toEqual('5, 2, 3, 11, 10, 12');
+            expect(tree.preOrder()).toEqual([5, 2, 3, 11, 10, 12]);
         });
         test('inorder', () => {
-            function toString() {
-                const dataArr = [];
-                function concatData(data) {
-                    dataArr.push(data);
-                }
-                this.inOrder(concatData);
-                return dataArr.join(', ');
-            }
-            expect(toString.call(tree)).toEqual('2, 3, 5, 10, 11, 12');
+            expect(tree.inOrder()).toEqual([2, 3, 5, 10, 11, 12]);
         });
         test('postorder', () => {
-            function toString() {
-                const dataArr = [];
-                function concatData(data) {
-                    dataArr.push(data);
-                }
-                this.postOrder(concatData);
-                return dataArr.join(', ');
-            }
-            expect(toString.call(tree)).toEqual('3, 2, 10, 12, 11, 5');
+            expect(tree.postOrder()).toEqual([3, 2, 10, 12, 11, 5]);
+        });
+        test('preorder summation', () => {
+            expect(tree.preOrder((data, acc) => acc + data, 0)).toBe(43);
+        });
+        test('inorder summation', () => {
+            expect(tree.inOrder((data, acc) => acc + data, 0)).toBe(43);
+        });
+        test('postorder summation', () => {
+            expect(tree.postOrder((data, acc) => acc + data, 0)).toBe(43);
         });
     });
 });
@@ -98,7 +59,7 @@ describe('Breadth-first traversal', () => {
     test('Level order instance method', () => {
         expect(tree.levelOrder()).toEqual([5, 2, 11, 3, 10, 12]);
     });
-    test('Level order instance method summing', () => {
+    test('Level order instance method summation', () => {
         expect(tree.levelOrder((data, acc) => acc + data, 0)).toBe(43);
     });
 });
