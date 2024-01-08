@@ -36,9 +36,9 @@ class Tree {
     }
 
     static #inOrderRecur(root, cb, acc) {
-        if(typeof cb !== 'function') {
+        if (typeof cb !== 'function') {
             acc = [];
-            cb = function(data, acc) {
+            cb = function (data, acc) {
                 acc.push(data);
                 return acc;
             }
@@ -61,9 +61,9 @@ class Tree {
     }
 
     static #preOrderRecur(root, cb, acc) {
-        if(typeof cb !== 'function') {
+        if (typeof cb !== 'function') {
             acc = [];
-            cb = function(data, acc) {
+            cb = function (data, acc) {
                 acc.push(data);
                 return acc;
             }
@@ -86,9 +86,9 @@ class Tree {
     }
 
     static #postOrderRecur(root, cb, acc) {
-        if(typeof cb !== 'function') {
+        if (typeof cb !== 'function') {
             acc = [];
-            cb = function(data, acc) {
+            cb = function (data, acc) {
                 acc.push(data);
                 return acc;
             }
@@ -107,23 +107,23 @@ class Tree {
     }
 
     levelOrder(cb, acc) {
-        if(typeof cb !== 'function') {
+        if (typeof cb !== 'function') {
             acc = [];
-            cb = function(data, acc) {
+            cb = function (data, acc) {
                 acc.push(data);
                 return acc;
             }
         }
 
-        if(this.#root === null) return;
+        if (this.#root === null) return;
         const queue = [this.#root];
-        while(queue.length > 0) {
+        while (queue.length > 0) {
             const curNode = queue.shift();
             acc = cb(curNode.data, acc);
-            if(curNode.left !== null) {
+            if (curNode.left !== null) {
                 queue.push(curNode.left);
             }
-            if(curNode.right !== null) {
+            if (curNode.right !== null) {
                 queue.push(curNode.right);
             }
         }
@@ -172,7 +172,7 @@ class Tree {
     };
 
     static #delete(curNode, data) {
-        if(curNode === null) {
+        if (curNode === null) {
             return null;
         }
         if (data === curNode.data) {
@@ -206,17 +206,64 @@ class Tree {
 
     find(data) {
         let curNode = this.#root;
-        while(curNode !== null) {
-            if(data === curNode.data) {
+        while (curNode !== null) {
+            if (data === curNode.data) {
                 return true;
             }
-            if(data > curNode.data) {
+            if (data > curNode.data) {
                 curNode = curNode.right;
             } else {
                 curNode = curNode.left;
             }
         }
         return false;
+    }
+
+    #find(data) {
+        let curNode = this.#root;
+        while (curNode !== null) {
+            if (data === curNode.data) {
+                return curNode;
+            }
+            if (data > curNode.data) {
+                curNode = curNode.right;
+            } else {
+                curNode = curNode.left;
+            }
+        }
+        return curNode;
+    }
+
+    static #height(root) {
+        if (root === null) return -1;
+
+        let height = Math.max(Tree.#height(root.left), Tree.#height(root.right));
+        height++;
+        return height;
+    }
+
+    height(data) {
+        const node = this.#find(data);
+
+        return Tree.#height(node);
+    }
+
+    depth(data) {
+        let depth = 0;
+        let curNode = this.#root;
+        while (curNode !== null) {
+            if (data === curNode.data) {
+                return depth;
+            }
+            
+            if (data > curNode.data) {
+                curNode = curNode.right;
+            } else {
+                curNode = curNode.left;
+            }
+            depth++;
+        }
+        return -1;
     }
 
     toString() {

@@ -144,3 +144,37 @@ describe('Find', () => {
         expect(tree.find(11)).toBeTruthy();
     });
 });
+
+describe('Height', () => {
+    const tree = new Tree([10, 3, 5, 2, 12, 11]);
+
+    test('Not in tree', () => {
+        expect(tree.height(1)).toBe(-1);
+    });
+    test('Root', () => {
+        expect(tree.height(5)).toBe(2);
+    });
+    test('Middle layer', () => {
+        expect(tree.height(2)).toBe(1);
+    });
+    test('Leaf', () => {
+        expect(tree.height(10)).toBe(0);
+    });
+});
+
+describe('Depth', () => {
+    const tree = new Tree([10, 3, 5, 2, 12, 11]);
+
+    test('Not in tree', () => {
+        expect(tree.depth(1)).toBe(-1);
+    });
+    test('Root', () => {
+        expect(tree.depth(5)).toBe(0);
+    });
+    test('Middle layer', () => {
+        expect(tree.depth(2)).toBe(1);
+    });
+    test('Leaf', () => {
+        expect(tree.depth(10)).toBe(2);
+    });
+});
