@@ -67,9 +67,7 @@ describe('Breadth-first traversal', () => {
 describe('Insertion', () => {
     test('Insert nothing', () => {
         const tree = new Tree([10, 3, 5, 2, 12, 11]);
-        tree.insert();
-        tree.insert(undefined);
-        tree.insert(null);
+        tree.insert().insert(undefined).insert(null);
         expect(tree.toString()).toEqual('2, 3, 5, 10, 11, 12');
     })
     test('Insert into empty tree', () => {
@@ -79,15 +77,12 @@ describe('Insertion', () => {
     });
     test('Insert duplicate', () => {
         const tree = new Tree();
-        tree.insert(6);
-        tree.insert(6);
+        tree.insert(6).insert(6);
         expect(tree.toString()).toEqual('6');
     });
     test('Insert in any order', () => {
         const tree = new Tree();
-        tree.insert(8);
-        tree.insert(12);
-        tree.insert(4);
+        tree.insert(8).insert(12).insert(4);
         expect(tree.toString()).toEqual('4, 8, 12');
     });
 });
@@ -176,5 +171,72 @@ describe('Depth', () => {
     });
     test('Leaf', () => {
         expect(tree.depth(10)).toBe(2);
+    });
+});
+
+describe('Tree balancing', () => {
+    describe('Check if balanced', () => {
+        test('Unbalanced 1', () => {
+            const tree = new Tree();
+            tree.insert(1).insert(2).insert(3).insert(4);
+            expect(tree.isBalanced()).toBeFalsy();
+        });
+        test('Unbalanced 2', () => {
+            const tree = new Tree();
+            tree.insert(4).insert(2).insert(1).insert(3);
+            expect(tree.isBalanced()).toBeFalsy();
+        });
+        test('Unbalanced 3', () => {
+            const tree = new Tree();
+            tree.insert(3).insert(2).insert(1);
+            expect(tree.isBalanced()).toBeFalsy();
+        });
+        test('Balanced 1', () => {
+            const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+            expect(tree.isBalanced()).toBeTruthy();
+        });
+        test('Balanced 2', () => {
+            // inserting in this order: 5, 2, 3, 11, 9, 13
+            const tree = new Tree([9, 3, 5, 2, 13, 11]);
+            tree.insert(8).insert(10).insert(12).insert(14);
+            expect(tree.isBalanced()).toBeTruthy();
+        });
+    });
+
+    describe('Rebalance', () => {
+        describe('Originally unbalanced', () => {
+            test('Rebalance 1', () => {
+                const tree = new Tree();
+                tree.insert(1).insert(2).insert(3).insert(4);
+                tree.rebalance();
+                expect(tree.isBalanced()).toBeTruthy();
+            });
+            test('Rebalance 2', () => {
+                const tree = new Tree();
+                tree.insert(4).insert(2).insert(1).insert(3);
+                tree.rebalance();
+                expect(tree.isBalanced()).toBeTruthy();
+            });
+            test('Rebalance 3', () => {
+                const tree = new Tree();
+                tree.insert(3).insert(2).insert(1);
+                tree.rebalance();
+                expect(tree.isBalanced()).toBeTruthy();
+            });
+        });
+        describe('Already balanced', () => {
+            test('Balanced 1', () => {
+                const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+                tree.rebalance();
+                expect(tree.isBalanced()).toBeTruthy();
+            });
+            test('Balanced 2', () => {
+                // inserting in this order: 5, 2, 3, 11, 9, 13
+                const tree = new Tree([9, 3, 5, 2, 13, 11]);
+                tree.insert(8).insert(10).insert(12).insert(14);
+                tree.rebalance();
+                expect(tree.isBalanced()).toBeTruthy();
+            });
+        });
     });
 });

@@ -132,6 +132,7 @@ class Tree {
 
     insert(data) {
         this.#root = Tree.#insert(this.#root, data);
+        return this;
     }
 
     static #insert(curNode, data) {
@@ -255,7 +256,7 @@ class Tree {
             if (data === curNode.data) {
                 return depth;
             }
-            
+
             if (data > curNode.data) {
                 curNode = curNode.right;
             } else {
@@ -264,6 +265,25 @@ class Tree {
             depth++;
         }
         return -1;
+    }
+
+    static #isBalanced(root) {
+        if (root === null) return true;
+
+        const heightDiffBalanced = Math.abs(Tree.#height(root.left) - Tree.#height(root.right)) <= 1;
+        const bothSubtreesBalanced = (Tree.#isBalanced(root.left) && Tree.#isBalanced(root.right));
+
+        return heightDiffBalanced && bothSubtreesBalanced;
+    }
+
+    isBalanced() {
+        return Tree.#isBalanced(this.#root);
+    }
+
+    rebalance() {
+        let inOrderArr = this.inOrder();
+        this.#root = Tree.#buildTree(inOrderArr);
+        return this;
     }
 
     toString() {
