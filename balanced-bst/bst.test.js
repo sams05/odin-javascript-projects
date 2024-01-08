@@ -89,6 +89,20 @@ describe('Depth-first traversals', () => {
     });
 });
 
+describe('Breadth-first traversal', () => {
+    const tree = new Tree([10, 3, 5, 2, 12, 11]);
+
+    test('Level order static method', () => {
+        expect(Tree.levelOrder(tree)).toEqual([5, 2, 11, 3, 10, 12]);
+    });
+    test('Level order instance method', () => {
+        expect(tree.levelOrder()).toEqual([5, 2, 11, 3, 10, 12]);
+    });
+    test('Level order instance method summing', () => {
+        expect(tree.levelOrder((data, acc) => acc + data, 0)).toBe(43);
+    });
+});
+
 describe('Insertion', () => {
     test('Insert nothing', () => {
         const tree = new Tree([10, 3, 5, 2, 12, 11]);

@@ -75,6 +75,34 @@ class Tree {
         Tree.postOrder(this, cb);
     }
 
+    static levelOrder(tree, cb, acc) {
+        return tree.levelOrder(cb, acc);
+    }
+
+    levelOrder(cb, acc) {
+        if(typeof cb !== 'function') {
+            acc = [];
+            cb = function(data, acc) {
+                acc.push(data);
+                return acc;
+            }
+        }
+
+        if(this.#root === null) return;
+        const queue = [this.#root];
+        while(queue.length > 0) {
+            const curNode = queue.shift();
+            acc = cb(curNode.data, acc);
+            if(curNode.left !== null) {
+                queue.push(curNode.left);
+            }
+            if(curNode.right !== null) {
+                queue.push(curNode.right);
+            }
+        }
+        return acc;
+    }
+
     insert(data) {
         this.#root = Tree.#insert(this.#root, data);
     }
