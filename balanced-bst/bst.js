@@ -149,6 +149,21 @@ class Tree {
         return curNode;
     }
 
+    find(data) {
+        let curNode = this.#root;
+        while(curNode !== null) {
+            if(data === curNode.data) {
+                return true;
+            }
+            if(data > curNode.data) {
+                curNode = curNode.right;
+            } else {
+                curNode = curNode.left;
+            }
+        }
+        return false;
+    }
+
     toString() {
         const dataArr = [];
         function concatData(data) {

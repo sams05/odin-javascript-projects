@@ -150,50 +150,22 @@ describe('Deletion', () => {
     });
 });
 
-/*
-{
-    data: 8,
-        left: {
-        data: 4,
-            left: {
-            data: 1,
-                left: null,
-                    right: {
-                data: 3,
-                    left: null,
-                        right: null
-            }
-        },
-        right: {
-            data: 5,
-                left: null,
-                    right: {
-                data: 7,
-                    left: null,
-                        right: null
-            }
-        }
-    },
-    right: {
-        data: 67,
-            left: {
-            data: 9,
-                left: null,
-                    right: {
-                data: 23,
-                    left: null,
-                        right: null
-            }
-        },
-        right: {
-            data: 324,
-                left: null,
-                    right: {
-                data: 6345,
-                    left: null,
-                        right: null
-            }
-        }
-    }
-}
-*/
+describe('Find', () => {
+    const tree = new Tree([10, 3, 5, 2, 12, 11]);
+
+    test('Empty tree', () => {
+        expect(new Tree().find(2)).toBeFalsy();
+    });
+    test('Not in tree', () => {
+        expect(tree.find(8)).toBeFalsy();
+    });
+    test('At root', () => {
+        expect(tree.find(5)).toBeTruthy();
+    });
+    test('At leaf', () => {
+        expect(tree.find(3)).toBeTruthy();
+    });
+    test('At mid level', () => {
+        expect(tree.find(11)).toBeTruthy();
+    });
+});
