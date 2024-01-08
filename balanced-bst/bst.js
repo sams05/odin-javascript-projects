@@ -36,7 +36,7 @@ class Tree {
     }
 
     static #inOrderRecur(root, cb = ((data) => console.log(data))) {
-        if(root === null) return;
+        if (root === null) return;
 
         Tree.#inOrderRecur(root.left, cb);
         cb(root.data);
@@ -52,7 +52,7 @@ class Tree {
     }
 
     static #preOrderRecur(root, cb = ((data) => console.log(data))) {
-        if(root === null) return;
+        if (root === null) return;
 
         cb(root.data);
         Tree.#preOrderRecur(root.left, cb);
@@ -64,7 +64,7 @@ class Tree {
     }
 
     static #postOrderRecur(root, cb = ((data) => console.log(data))) {
-        if(root === null) return;
+        if (root === null) return;
 
         Tree.#postOrderRecur(root.left, cb);
         Tree.#postOrderRecur(root.right, cb);
@@ -75,12 +75,86 @@ class Tree {
         Tree.postOrder(this, cb);
     }
 
+    insert(data) {
+        this.#root = Tree.#insert(this.#root, data);
+    }
+
+    static #insert(curNode, data) {
+        // Base cases
+        if (data === undefined || data === null) {
+            return curNode;
+        }
+        if (curNode === null) {
+            return new Tree.#Node(data);
+        }
+        // Recursive case: insert to its left or right subtree then return itself
+        if (data > curNode.data) {
+            curNode.right = Tree.#insert(curNode.right, data);
+        }
+        if (data < curNode.data) {
+            curNode.left = Tree.#insert(curNode.left, data);
+        }
+        return curNode;
+    }
+
+    static #getMinData(root) {
+        if (root === null) {
+            throw new Error('Empty tree');
+        }
+        let curNode = root;
+        while (curNode.left !== null) {
+            curNode = curNode.left;
+        }
+        return curNode.data;
+    }
+
+    static #getSuccessorData(node) {
+        return Tree.#getMinData(node.right);
+    }
+
+    delete(data) {
+        this.#root = Tree.#delete(this.#root, data);
+    };
+
+    static #delete(curNode, data) {
+        if(curNode === null) {
+            return null;
+        }
+        if (data === curNode.data) {
+            if (curNode.left === null && curNode.right === null) {
+                // Leaf node
+                return null;
+            } else if (curNode.left === null) {
+                // Only have right subtree
+                return curNode.right;
+            } else if (curNode.right === null) {
+                // Only have left subtree
+                return curNode.left;
+            } else {
+                // Have both children
+                const successorData = Tree.#getSuccessorData(curNode);
+                curNode.data = successorData;
+                curNode.right = Tree.#delete(curNode.right, successorData);
+                return curNode;
+            }
+        }
+
+        // Recursive case: delete from the left or right subtree then return itself
+        if (data > curNode.data) {
+            curNode.right = Tree.#delete(curNode.right, data);
+        }
+        if (data < curNode.data) {
+            curNode.left = Tree.#delete(curNode.left, data);
+        }
+        return curNode;
+    }
+
     toString() {
         const dataArr = [];
         function concatData(data) {
             dataArr.push(data);
         }
-        Tree.inOrder(this, concatData);
+        this.inOrder(concatData);
         return dataArr.join(', ');
     }
 }
